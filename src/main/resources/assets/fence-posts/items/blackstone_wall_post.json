@@ -1,0 +1,6 @@
+{
+	"model": {
+		"type": "minecraft:model",
+		"model": "fence-posts:item/blackstone_wall_post"
+	}
+}

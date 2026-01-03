@@ -1,0 +1,10 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		"minecraft:sandstone_wall"
+	],
+	"result": {
+		"id": "fence-posts:sandstone_wall_post",
+		"count": 2
+	}
+}

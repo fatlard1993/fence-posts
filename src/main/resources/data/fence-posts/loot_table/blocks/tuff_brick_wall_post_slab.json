@@ -1,0 +1,34 @@
+{
+	"type": "minecraft:block",
+	"pools": [
+		{
+			"rolls": 1,
+			"entries": [
+				{
+					"type": "minecraft:item",
+					"name": "fence-posts:tuff_brick_wall_post_slab",
+					"functions": [
+						{
+							"function": "minecraft:set_count",
+							"count": 2,
+							"conditions": [
+								{
+									"condition": "minecraft:block_state_property",
+									"block": "fence-posts:tuff_brick_wall_post_slab",
+									"properties": {
+										"type": "double"
+									}
+								}
+							]
+						}
+					]
+				}
+			],
+			"conditions": [
+				{
+					"condition": "minecraft:survives_explosion"
+				}
+			]
+		}
+	]
+}

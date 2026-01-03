@@ -1,0 +1,6 @@
+{
+	"model": {
+		"type": "minecraft:model",
+		"model": "fence-posts:item/diorite_wall_post"
+	}
+}

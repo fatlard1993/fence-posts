@@ -1,0 +1,21 @@
+{
+	"schemaVersion": 1,
+	"id": "fence-posts",
+	"version": "${version}",
+	"name": "Fence Posts",
+	"description": "Standalone fence and wall posts with half-height slab variants",
+	"authors": ["justfatlard"],
+	"contact": {
+		"sources": "https://github.com/fatlard1993/fence-posts"
+	},
+	"license": "MIT",
+	"environment": "*",
+	"entrypoints": {
+		"main": ["justfatlard.fence_posts.Main"]
+	},
+	"depends": {
+		"fabricloader": ">=0.18.1",
+		"fabric": "*",
+		"minecraft": ">=1.21"
+	}
+}

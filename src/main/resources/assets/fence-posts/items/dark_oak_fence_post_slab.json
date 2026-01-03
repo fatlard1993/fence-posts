@@ -1,0 +1,6 @@
+{
+	"model": {
+		"type": "minecraft:model",
+		"model": "fence-posts:item/dark_oak_fence_post_slab"
+	}
+}

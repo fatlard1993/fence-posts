@@ -1,0 +1,10 @@
+{
+	"variants": {
+		"waterlogged=false": {
+			"model": "fence-posts:block/bamboo_fence_post"
+		},
+		"waterlogged=true": {
+			"model": "fence-posts:block/bamboo_fence_post"
+		}
+	}
+}

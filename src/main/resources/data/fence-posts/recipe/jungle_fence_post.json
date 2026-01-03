@@ -1,0 +1,10 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		"minecraft:jungle_fence"
+	],
+	"result": {
+		"id": "fence-posts:jungle_fence_post",
+		"count": 2
+	}
+}

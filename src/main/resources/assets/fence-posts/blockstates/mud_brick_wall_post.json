@@ -1,0 +1,10 @@
+{
+	"variants": {
+		"waterlogged=false": {
+			"model": "fence-posts:block/mud_brick_wall_post"
+		},
+		"waterlogged=true": {
+			"model": "fence-posts:block/mud_brick_wall_post"
+		}
+	}
+}

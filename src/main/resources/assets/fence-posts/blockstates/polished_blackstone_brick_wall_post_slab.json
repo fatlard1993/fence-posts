@@ -1,0 +1,22 @@
+{
+	"variants": {
+		"type=bottom,waterlogged=false": {
+			"model": "fence-posts:block/polished_blackstone_brick_wall_post_slab_bottom"
+		},
+		"type=bottom,waterlogged=true": {
+			"model": "fence-posts:block/polished_blackstone_brick_wall_post_slab_bottom"
+		},
+		"type=top,waterlogged=false": {
+			"model": "fence-posts:block/polished_blackstone_brick_wall_post_slab_top"
+		},
+		"type=top,waterlogged=true": {
+			"model": "fence-posts:block/polished_blackstone_brick_wall_post_slab_top"
+		},
+		"type=double,waterlogged=false": {
+			"model": "fence-posts:block/polished_blackstone_brick_wall_post_slab_double"
+		},
+		"type=double,waterlogged=true": {
+			"model": "fence-posts:block/polished_blackstone_brick_wall_post_slab_double"
+		}
+	}
+}
