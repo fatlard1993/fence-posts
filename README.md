@@ -16,6 +16,7 @@ A Minecraft Fabric mod that adds standalone fence and wall posts with half-heigh
 - **Wall Posts** - Standalone 8x8 pixel posts for all vanilla wall types (25 variants)
 - **Slab Variants** - Half-height versions of all posts that can be stacked
 - **Waterlogging** - All posts support waterlogging
+- **Lead Attachment** - Fence posts support attaching leads (just like vanilla fences)
 - **Creative Tab** - Dedicated "Fence & Wall Posts" creative tab
 
 ## Supported Blocks

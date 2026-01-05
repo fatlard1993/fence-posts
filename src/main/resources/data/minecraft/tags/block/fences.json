@@ -1,0 +1,31 @@
+{
+  "replace": false,
+  "values": [
+    "fence-posts:oak_fence_post",
+    "fence-posts:oak_fence_post_slab",
+    "fence-posts:spruce_fence_post",
+    "fence-posts:spruce_fence_post_slab",
+    "fence-posts:birch_fence_post",
+    "fence-posts:birch_fence_post_slab",
+    "fence-posts:jungle_fence_post",
+    "fence-posts:jungle_fence_post_slab",
+    "fence-posts:acacia_fence_post",
+    "fence-posts:acacia_fence_post_slab",
+    "fence-posts:dark_oak_fence_post",
+    "fence-posts:dark_oak_fence_post_slab",
+    "fence-posts:mangrove_fence_post",
+    "fence-posts:mangrove_fence_post_slab",
+    "fence-posts:cherry_fence_post",
+    "fence-posts:cherry_fence_post_slab",
+    "fence-posts:bamboo_fence_post",
+    "fence-posts:bamboo_fence_post_slab",
+    "fence-posts:crimson_fence_post",
+    "fence-posts:crimson_fence_post_slab",
+    "fence-posts:warped_fence_post",
+    "fence-posts:warped_fence_post_slab",
+    "fence-posts:pale_oak_fence_post",
+    "fence-posts:pale_oak_fence_post_slab",
+    "fence-posts:nether_brick_fence_post",
+    "fence-posts:nether_brick_fence_post_slab"
+  ]
+}
