@@ -1,17 +1,15 @@
 plugins {
 	id 'fabric-loom' version '1.13-SNAPSHOT'
-	id 'maven-publish'
 }
 
 sourceCompatibility = JavaVersion.VERSION_21
 targetCompatibility = JavaVersion.VERSION_21
 
-archivesBaseName = project.archives_base_name
+base {
+	archivesName = project.archives_base_name
+}
 version = project.mod_version
 group = project.maven_group
-
-repositories {
-}
 
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
@@ -31,6 +29,7 @@ processResources {
 
 tasks.withType(JavaCompile).configureEach {
 	options.encoding = "UTF-8"
+	options.release = 21
 }
 
 java {
@@ -39,17 +38,6 @@ java {
 
 jar {
 	from("LICENSE") {
-		rename { "${it}_${project.archivesBaseName}" }
-	}
-}
-
-publishing {
-	publications {
-		mavenJava(MavenPublication) {
-			from components.java
-		}
-	}
-
-	repositories {
+		rename { "${it}_${project.base.archivesName.get()}" }
 	}
 }

@@ -23,19 +23,24 @@ import net.minecraft.world.WorldView;
 import net.minecraft.world.tick.ScheduledTickView;
 
 /**
- * Half-height (8px) fence post slab with stackable behavior.
- * 4x4 centered shape matching fence post dimensions.
+ * Half-height (8px) post slab with stackable behavior.
+ * Shape width is determined by the inset parameter:
+ * - Fence post slabs use inset 6.0 (4x4 centered)
+ * - Wall post slabs use inset 4.0 (8x8 centered)
  */
-public class FencePostSlab extends Block implements Waterloggable {
-	public static final EnumProperty<SlabType> TYPE;
-	public static final BooleanProperty WATERLOGGED;
+public class PostSlabBlock extends Block implements Waterloggable {
+	public static final EnumProperty<SlabType> TYPE = Properties.SLAB_TYPE;
+	public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
 
-	protected static final VoxelShape BOTTOM_SHAPE;
-	protected static final VoxelShape TOP_SHAPE;
-	protected static final VoxelShape DOUBLE_SHAPE;
+	protected final VoxelShape bottomShape;
+	protected final VoxelShape topShape;
+	protected final VoxelShape doubleShape;
 
-	public FencePostSlab(AbstractBlock.Settings settings) {
+	public PostSlabBlock(AbstractBlock.Settings settings, double inset) {
 		super(settings);
+		this.bottomShape = Block.createCuboidShape(inset, 0.0, inset, 16.0 - inset, 8.0, 16.0 - inset);
+		this.topShape = Block.createCuboidShape(inset, 8.0, inset, 16.0 - inset, 16.0, 16.0 - inset);
+		this.doubleShape = Block.createCuboidShape(inset, 0.0, inset, 16.0 - inset, 16.0, 16.0 - inset);
 		this.setDefaultState(this.getDefaultState().with(TYPE, SlabType.BOTTOM).with(WATERLOGGED, false));
 	}
 
@@ -46,11 +51,10 @@ public class FencePostSlab extends Block implements Waterloggable {
 
 	@Override
 	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-		SlabType type = state.get(TYPE);
-		return switch (type) {
-			case DOUBLE -> DOUBLE_SHAPE;
-			case TOP -> TOP_SHAPE;
-			default -> BOTTOM_SHAPE;
+		return switch (state.get(TYPE)) {
+			case DOUBLE -> doubleShape;
+			case TOP -> topShape;
+			default -> bottomShape;
 		};
 	}
 
@@ -111,15 +115,5 @@ public class FencePostSlab extends Block implements Waterloggable {
 			tickView.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 		}
 		return super.getStateForNeighborUpdate(state, world, tickView, pos, direction, neighborPos, neighborState, random);
-	}
-
-	static {
-		TYPE = Properties.SLAB_TYPE;
-		WATERLOGGED = Properties.WATERLOGGED;
-
-		// 4x4 centered shapes
-		BOTTOM_SHAPE = Block.createCuboidShape(6.0D, 0.0D, 6.0D, 10.0D, 8.0D, 10.0D);
-		TOP_SHAPE = Block.createCuboidShape(6.0D, 8.0D, 6.0D, 10.0D, 16.0D, 10.0D);
-		DOUBLE_SHAPE = Block.createCuboidShape(6.0D, 0.0D, 6.0D, 10.0D, 16.0D, 10.0D);
 	}
 }

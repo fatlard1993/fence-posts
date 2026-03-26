@@ -20,15 +20,18 @@ import net.minecraft.world.WorldView;
 import net.minecraft.world.tick.ScheduledTickView;
 
 /**
- * Full-height (16px) wall post - a standalone post that doesn't connect to walls.
- * 8x8 centered shape matching wall post dimensions.
+ * Full-height (16px) standalone post that doesn't connect to fences or walls.
+ * Shape width is determined by the inset parameter:
+ * - Fence posts use inset 6.0 (4x4 centered)
+ * - Wall posts use inset 4.0 (8x8 centered)
  */
-public class WallPost extends Block implements Waterloggable {
-	public static final BooleanProperty WATERLOGGED;
-	protected static final VoxelShape SHAPE;
+public class PostBlock extends Block implements Waterloggable {
+	public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
+	protected final VoxelShape shape;
 
-	public WallPost(AbstractBlock.Settings settings) {
+	public PostBlock(AbstractBlock.Settings settings, double inset) {
 		super(settings);
+		this.shape = Block.createCuboidShape(inset, 0.0, inset, 16.0 - inset, 16.0, 16.0 - inset);
 		this.setDefaultState(this.getDefaultState().with(WATERLOGGED, false));
 	}
 
@@ -39,7 +42,7 @@ public class WallPost extends Block implements Waterloggable {
 
 	@Override
 	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-		return SHAPE;
+		return shape;
 	}
 
 	@Override
@@ -59,11 +62,5 @@ public class WallPost extends Block implements Waterloggable {
 			tickView.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 		}
 		return super.getStateForNeighborUpdate(state, world, tickView, pos, direction, neighborPos, neighborState, random);
-	}
-
-	static {
-		WATERLOGGED = Properties.WATERLOGGED;
-		// 8x8 centered, full height
-		SHAPE = Block.createCuboidShape(4.0D, 0.0D, 4.0D, 12.0D, 16.0D, 12.0D);
 	}
 }
