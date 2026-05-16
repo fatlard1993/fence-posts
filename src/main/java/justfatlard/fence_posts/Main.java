@@ -1,22 +1,22 @@
 package justfatlard.fence_posts;
 
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
+import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
 import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.MapColor;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.sound.BlockSoundGroup;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.MapColor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,69 +48,69 @@ public class Main implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		// Fence posts -- wood types (axe-mineable, no tool required, burnable)
-		registerFencePost("oak", BlockSoundGroup.WOOD, true, false, 2.0f, 3.0f, MapColor.OAK_TAN);
-		registerFencePost("spruce", BlockSoundGroup.WOOD, true, false, 2.0f, 3.0f, MapColor.SPRUCE_BROWN);
-		registerFencePost("birch", BlockSoundGroup.WOOD, true, false, 2.0f, 3.0f, MapColor.PALE_YELLOW);
-		registerFencePost("jungle", BlockSoundGroup.WOOD, true, false, 2.0f, 3.0f, MapColor.DIRT_BROWN);
-		registerFencePost("acacia", BlockSoundGroup.WOOD, true, false, 2.0f, 3.0f, MapColor.ORANGE);
-		registerFencePost("dark_oak", BlockSoundGroup.WOOD, true, false, 2.0f, 3.0f, MapColor.BROWN);
-		registerFencePost("mangrove", BlockSoundGroup.WOOD, true, false, 2.0f, 3.0f, MapColor.RED);
-		registerFencePost("cherry", BlockSoundGroup.CHERRY_WOOD, true, false, 2.0f, 3.0f, MapColor.TERRACOTTA_WHITE);
-		registerFencePost("bamboo", BlockSoundGroup.BAMBOO_WOOD, true, false, 2.0f, 3.0f, MapColor.YELLOW);
-		registerFencePost("crimson", BlockSoundGroup.NETHER_WOOD, false, false, 2.0f, 3.0f, MapColor.DULL_PINK);
-		registerFencePost("warped", BlockSoundGroup.NETHER_WOOD, false, false, 2.0f, 3.0f, MapColor.DARK_AQUA);
-		registerFencePost("pale_oak", BlockSoundGroup.WOOD, true, false, 2.0f, 3.0f, MapColor.OAK_TAN);
+		registerFencePost("oak", SoundType.WOOD, true, false, 2.0f, 3.0f, MapColor.WOOD);
+		registerFencePost("spruce", SoundType.WOOD, true, false, 2.0f, 3.0f, MapColor.PODZOL);
+		registerFencePost("birch", SoundType.WOOD, true, false, 2.0f, 3.0f, MapColor.SAND);
+		registerFencePost("jungle", SoundType.WOOD, true, false, 2.0f, 3.0f, MapColor.DIRT);
+		registerFencePost("acacia", SoundType.WOOD, true, false, 2.0f, 3.0f, MapColor.COLOR_ORANGE);
+		registerFencePost("dark_oak", SoundType.WOOD, true, false, 2.0f, 3.0f, MapColor.COLOR_BROWN);
+		registerFencePost("mangrove", SoundType.WOOD, true, false, 2.0f, 3.0f, MapColor.COLOR_RED);
+		registerFencePost("cherry", SoundType.CHERRY_WOOD, true, false, 2.0f, 3.0f, MapColor.TERRACOTTA_WHITE);
+		registerFencePost("bamboo", SoundType.BAMBOO_WOOD, true, false, 2.0f, 3.0f, MapColor.COLOR_YELLOW);
+		registerFencePost("crimson", SoundType.NETHER_WOOD, false, false, 2.0f, 3.0f, MapColor.CRIMSON_STEM);
+		registerFencePost("warped", SoundType.NETHER_WOOD, false, false, 2.0f, 3.0f, MapColor.WARPED_STEM);
+		registerFencePost("pale_oak", SoundType.WOOD, true, false, 2.0f, 3.0f, MapColor.WOOD);
 		// Nether brick fence post -- pickaxe-mineable, requires tool
-		registerFencePost("nether_brick", BlockSoundGroup.NETHER_BRICKS, false, true, 2.0f, 6.0f, MapColor.DARK_RED);
+		registerFencePost("nether_brick", SoundType.NETHER_BRICKS, false, true, 2.0f, 6.0f, MapColor.NETHER);
 
 		// Wall posts -- all pickaxe-mineable, require tool
-		registerWallPost("cobblestone", BlockSoundGroup.STONE, 2.0f, 6.0f, MapColor.STONE_GRAY);
-		registerWallPost("mossy_cobblestone", BlockSoundGroup.STONE, 2.0f, 6.0f, MapColor.STONE_GRAY);
-		registerWallPost("stone_brick", BlockSoundGroup.STONE, 1.5f, 6.0f, MapColor.STONE_GRAY);
-		registerWallPost("mossy_stone_brick", BlockSoundGroup.STONE, 1.5f, 6.0f, MapColor.STONE_GRAY);
-		registerWallPost("brick", BlockSoundGroup.STONE, 2.0f, 6.0f, MapColor.BRIGHT_RED);
-		registerWallPost("mud_brick", BlockSoundGroup.MUD_BRICKS, 1.5f, 3.0f, MapColor.TERRACOTTA_LIGHT_GRAY);
-		registerWallPost("sandstone", BlockSoundGroup.STONE, 0.8f, 0.8f, MapColor.PALE_YELLOW);
-		registerWallPost("red_sandstone", BlockSoundGroup.STONE, 0.8f, 0.8f, MapColor.ORANGE);
-		registerWallPost("granite", BlockSoundGroup.STONE, 1.5f, 6.0f, MapColor.DIRT_BROWN);
-		registerWallPost("diorite", BlockSoundGroup.STONE, 1.5f, 6.0f, MapColor.OFF_WHITE);
-		registerWallPost("andesite", BlockSoundGroup.STONE, 1.5f, 6.0f, MapColor.STONE_GRAY);
-		registerWallPost("prismarine", BlockSoundGroup.STONE, 1.5f, 6.0f, MapColor.CYAN);
-		registerWallPost("nether_brick", BlockSoundGroup.NETHER_BRICKS, 2.0f, 6.0f, MapColor.DARK_RED);
-		registerWallPost("red_nether_brick", BlockSoundGroup.NETHER_BRICKS, 2.0f, 6.0f, MapColor.DARK_RED);
-		registerWallPost("end_stone_brick", BlockSoundGroup.STONE, 3.0f, 9.0f, MapColor.PALE_YELLOW);
-		registerWallPost("blackstone", BlockSoundGroup.STONE, 1.5f, 6.0f, MapColor.BLACK);
-		registerWallPost("polished_blackstone", BlockSoundGroup.STONE, 2.0f, 6.0f, MapColor.BLACK);
-		registerWallPost("polished_blackstone_brick", BlockSoundGroup.STONE, 1.5f, 6.0f, MapColor.BLACK);
-		registerWallPost("cobbled_deepslate", BlockSoundGroup.DEEPSLATE, 3.5f, 6.0f, MapColor.DEEPSLATE_GRAY);
-		registerWallPost("polished_deepslate", BlockSoundGroup.POLISHED_DEEPSLATE, 3.5f, 6.0f, MapColor.DEEPSLATE_GRAY);
-		registerWallPost("deepslate_brick", BlockSoundGroup.DEEPSLATE_BRICKS, 3.5f, 6.0f, MapColor.DEEPSLATE_GRAY);
-		registerWallPost("deepslate_tile", BlockSoundGroup.DEEPSLATE_TILES, 3.5f, 6.0f, MapColor.DEEPSLATE_GRAY);
-		registerWallPost("tuff", BlockSoundGroup.TUFF, 1.5f, 6.0f, MapColor.TERRACOTTA_GRAY);
-		registerWallPost("polished_tuff", BlockSoundGroup.POLISHED_TUFF, 1.5f, 6.0f, MapColor.TERRACOTTA_GRAY);
-		registerWallPost("tuff_brick", BlockSoundGroup.TUFF_BRICKS, 1.5f, 6.0f, MapColor.TERRACOTTA_GRAY);
+		registerWallPost("cobblestone", SoundType.STONE, 2.0f, 6.0f, MapColor.STONE);
+		registerWallPost("mossy_cobblestone", SoundType.STONE, 2.0f, 6.0f, MapColor.STONE);
+		registerWallPost("stone_brick", SoundType.STONE, 1.5f, 6.0f, MapColor.STONE);
+		registerWallPost("mossy_stone_brick", SoundType.STONE, 1.5f, 6.0f, MapColor.STONE);
+		registerWallPost("brick", SoundType.STONE, 2.0f, 6.0f, MapColor.FIRE);
+		registerWallPost("mud_brick", SoundType.MUD_BRICKS, 1.5f, 3.0f, MapColor.TERRACOTTA_LIGHT_GRAY);
+		registerWallPost("sandstone", SoundType.STONE, 0.8f, 0.8f, MapColor.SAND);
+		registerWallPost("red_sandstone", SoundType.STONE, 0.8f, 0.8f, MapColor.COLOR_ORANGE);
+		registerWallPost("granite", SoundType.STONE, 1.5f, 6.0f, MapColor.DIRT);
+		registerWallPost("diorite", SoundType.STONE, 1.5f, 6.0f, MapColor.QUARTZ);
+		registerWallPost("andesite", SoundType.STONE, 1.5f, 6.0f, MapColor.STONE);
+		registerWallPost("prismarine", SoundType.STONE, 1.5f, 6.0f, MapColor.COLOR_CYAN);
+		registerWallPost("nether_brick", SoundType.NETHER_BRICKS, 2.0f, 6.0f, MapColor.NETHER);
+		registerWallPost("red_nether_brick", SoundType.NETHER_BRICKS, 2.0f, 6.0f, MapColor.NETHER);
+		registerWallPost("end_stone_brick", SoundType.STONE, 3.0f, 9.0f, MapColor.SAND);
+		registerWallPost("blackstone", SoundType.STONE, 1.5f, 6.0f, MapColor.COLOR_BLACK);
+		registerWallPost("polished_blackstone", SoundType.STONE, 2.0f, 6.0f, MapColor.COLOR_BLACK);
+		registerWallPost("polished_blackstone_brick", SoundType.STONE, 1.5f, 6.0f, MapColor.COLOR_BLACK);
+		registerWallPost("cobbled_deepslate", SoundType.DEEPSLATE, 3.5f, 6.0f, MapColor.DEEPSLATE);
+		registerWallPost("polished_deepslate", SoundType.POLISHED_DEEPSLATE, 3.5f, 6.0f, MapColor.DEEPSLATE);
+		registerWallPost("deepslate_brick", SoundType.DEEPSLATE_BRICKS, 3.5f, 6.0f, MapColor.DEEPSLATE);
+		registerWallPost("deepslate_tile", SoundType.DEEPSLATE_TILES, 3.5f, 6.0f, MapColor.DEEPSLATE);
+		registerWallPost("tuff", SoundType.TUFF, 1.5f, 6.0f, MapColor.TERRACOTTA_GRAY);
+		registerWallPost("polished_tuff", SoundType.POLISHED_TUFF, 1.5f, 6.0f, MapColor.TERRACOTTA_GRAY);
+		registerWallPost("tuff_brick", SoundType.TUFF_BRICKS, 1.5f, 6.0f, MapColor.TERRACOTTA_GRAY);
 
 		// Item group
-		ItemGroup postGroup = FabricItemGroup.builder()
-			.displayName(Text.literal("Fence & Wall Posts"))
+		CreativeModeTab postGroup = FabricCreativeModeTab.builder()
+			.title(Component.literal("Fence & Wall Posts"))
 			.icon(() -> FENCE_POSTS.isEmpty() ? ItemStack.EMPTY : new ItemStack(FENCE_POSTS.get(0)))
-			.entries((context, entries) -> {
+			.displayItems((context, entries) -> {
 				for (int i = 0; i < FENCE_POSTS.size(); i++) {
-					entries.add(new ItemStack(FENCE_POSTS.get(i)));
+					entries.accept(new ItemStack(FENCE_POSTS.get(i)));
 					if (i < FENCE_POST_SLABS.size()) {
-						entries.add(new ItemStack(FENCE_POST_SLABS.get(i)));
+						entries.accept(new ItemStack(FENCE_POST_SLABS.get(i)));
 					}
 				}
 				for (int i = 0; i < WALL_POSTS.size(); i++) {
-					entries.add(new ItemStack(WALL_POSTS.get(i)));
+					entries.accept(new ItemStack(WALL_POSTS.get(i)));
 					if (i < WALL_POST_SLABS.size()) {
-						entries.add(new ItemStack(WALL_POST_SLABS.get(i)));
+						entries.accept(new ItemStack(WALL_POST_SLABS.get(i)));
 					}
 				}
 			})
 			.build();
 
-		Registry.register(Registries.ITEM_GROUP, Identifier.of(MOD_ID, "posts"), postGroup);
+		Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, Identifier.fromNamespaceAndPath(MOD_ID, "posts"), postGroup);
 
 		int total = FENCE_POSTS.size() + FENCE_POST_SLABS.size() + WALL_POSTS.size() + WALL_POST_SLABS.size();
 		LOGGER.info("Registered {} blocks ({} fence posts, {} fence post slabs, {} wall posts, {} wall post slabs)",
@@ -129,7 +129,7 @@ public class Main implements ModInitializer {
 	 * @param mapColor Color shown on maps
 	 * @return The registered PostBlock, or null if already registered
 	 */
-	public static PostBlock registerFencePost(String baseName, BlockSoundGroup soundGroup, boolean burnable, boolean requiresTool, float hardness, float resistance, MapColor mapColor) {
+	public static PostBlock registerFencePost(String baseName, SoundType soundGroup, boolean burnable, boolean requiresTool, float hardness, float resistance, MapColor mapColor) {
 		String postName = baseName + "_fence_post";
 		String slabName = baseName + "_fence_post_slab";
 
@@ -139,41 +139,41 @@ public class Main implements ModInitializer {
 		registeredPosts.add(postName);
 
 		// Full post
-		RegistryKey<Block> postBlockKey = RegistryKey.of(RegistryKeys.BLOCK, Identifier.of(MOD_ID, postName));
-		AbstractBlock.Settings postSettings = AbstractBlock.Settings.create()
-			.registryKey(postBlockKey)
+		ResourceKey<Block> postBlockKey = ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MOD_ID, postName));
+		BlockBehaviour.Properties postSettings = BlockBehaviour.Properties.of()
+			.setId(postBlockKey)
 			.strength(hardness, resistance)
-			.sounds(soundGroup)
+			.sound(soundGroup)
 			.mapColor(mapColor)
-			.nonOpaque();
-		if (burnable) postSettings = postSettings.burnable();
-		if (requiresTool) postSettings = postSettings.requiresTool();
+			.noOcclusion();
+		if (burnable) postSettings = postSettings.ignitedByLava();
+		if (requiresTool) postSettings = postSettings.requiresCorrectToolForDrops();
 
 		PostBlock post = new PostBlock(postSettings, FENCE_POST_INSET);
-		Registry.register(Registries.BLOCK, postBlockKey.getValue(), post);
+		Registry.register(BuiltInRegistries.BLOCK, postBlockKey.identifier(), post);
 
-		RegistryKey<Item> postItemKey = RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MOD_ID, postName));
-		Registry.register(Registries.ITEM, postItemKey.getValue(),
-			new BlockItem(post, new Item.Settings().registryKey(postItemKey)));
+		ResourceKey<Item> postItemKey = ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(MOD_ID, postName));
+		Registry.register(BuiltInRegistries.ITEM, postItemKey.identifier(),
+			new BlockItem(post, new Item.Properties().setId(postItemKey)));
 		FENCE_POSTS.add(post);
 
 		// Slab
-		RegistryKey<Block> slabBlockKey = RegistryKey.of(RegistryKeys.BLOCK, Identifier.of(MOD_ID, slabName));
-		AbstractBlock.Settings slabSettings = AbstractBlock.Settings.create()
-			.registryKey(slabBlockKey)
+		ResourceKey<Block> slabBlockKey = ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MOD_ID, slabName));
+		BlockBehaviour.Properties slabSettings = BlockBehaviour.Properties.of()
+			.setId(slabBlockKey)
 			.strength(hardness, resistance)
-			.sounds(soundGroup)
+			.sound(soundGroup)
 			.mapColor(mapColor)
-			.nonOpaque();
-		if (burnable) slabSettings = slabSettings.burnable();
-		if (requiresTool) slabSettings = slabSettings.requiresTool();
+			.noOcclusion();
+		if (burnable) slabSettings = slabSettings.ignitedByLava();
+		if (requiresTool) slabSettings = slabSettings.requiresCorrectToolForDrops();
 
 		PostSlabBlock slab = new PostSlabBlock(slabSettings, FENCE_POST_INSET);
-		Registry.register(Registries.BLOCK, slabBlockKey.getValue(), slab);
+		Registry.register(BuiltInRegistries.BLOCK, slabBlockKey.identifier(), slab);
 
-		RegistryKey<Item> slabItemKey = RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MOD_ID, slabName));
-		Registry.register(Registries.ITEM, slabItemKey.getValue(),
-			new BlockItem(slab, new Item.Settings().registryKey(slabItemKey)));
+		ResourceKey<Item> slabItemKey = ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(MOD_ID, slabName));
+		Registry.register(BuiltInRegistries.ITEM, slabItemKey.identifier(),
+			new BlockItem(slab, new Item.Properties().setId(slabItemKey)));
 		FENCE_POST_SLABS.add(slab);
 
 		// Flammability -- wooden posts should spread fire like vanilla fences
@@ -196,7 +196,7 @@ public class Main implements ModInitializer {
 	 * @param mapColor Color shown on maps
 	 * @return The registered PostBlock, or null if already registered
 	 */
-	public static PostBlock registerWallPost(String baseName, BlockSoundGroup soundGroup, float hardness, float resistance, MapColor mapColor) {
+	public static PostBlock registerWallPost(String baseName, SoundType soundGroup, float hardness, float resistance, MapColor mapColor) {
 		String postName = baseName + "_wall_post";
 		String slabName = baseName + "_wall_post_slab";
 
@@ -206,39 +206,39 @@ public class Main implements ModInitializer {
 		registeredPosts.add(postName);
 
 		// Full post
-		RegistryKey<Block> postBlockKey = RegistryKey.of(RegistryKeys.BLOCK, Identifier.of(MOD_ID, postName));
-		AbstractBlock.Settings postSettings = AbstractBlock.Settings.create()
-			.registryKey(postBlockKey)
+		ResourceKey<Block> postBlockKey = ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MOD_ID, postName));
+		BlockBehaviour.Properties postSettings = BlockBehaviour.Properties.of()
+			.setId(postBlockKey)
 			.strength(hardness, resistance)
-			.sounds(soundGroup)
+			.sound(soundGroup)
 			.mapColor(mapColor)
-			.nonOpaque()
-			.requiresTool();
+			.noOcclusion()
+			.requiresCorrectToolForDrops();
 
 		PostBlock post = new PostBlock(postSettings, WALL_POST_INSET);
-		Registry.register(Registries.BLOCK, postBlockKey.getValue(), post);
+		Registry.register(BuiltInRegistries.BLOCK, postBlockKey.identifier(), post);
 
-		RegistryKey<Item> postItemKey = RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MOD_ID, postName));
-		Registry.register(Registries.ITEM, postItemKey.getValue(),
-			new BlockItem(post, new Item.Settings().registryKey(postItemKey)));
+		ResourceKey<Item> postItemKey = ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(MOD_ID, postName));
+		Registry.register(BuiltInRegistries.ITEM, postItemKey.identifier(),
+			new BlockItem(post, new Item.Properties().setId(postItemKey)));
 		WALL_POSTS.add(post);
 
 		// Slab
-		RegistryKey<Block> slabBlockKey = RegistryKey.of(RegistryKeys.BLOCK, Identifier.of(MOD_ID, slabName));
-		AbstractBlock.Settings slabSettings = AbstractBlock.Settings.create()
-			.registryKey(slabBlockKey)
+		ResourceKey<Block> slabBlockKey = ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MOD_ID, slabName));
+		BlockBehaviour.Properties slabSettings = BlockBehaviour.Properties.of()
+			.setId(slabBlockKey)
 			.strength(hardness, resistance)
-			.sounds(soundGroup)
+			.sound(soundGroup)
 			.mapColor(mapColor)
-			.nonOpaque()
-			.requiresTool();
+			.noOcclusion()
+			.requiresCorrectToolForDrops();
 
 		PostSlabBlock slab = new PostSlabBlock(slabSettings, WALL_POST_INSET);
-		Registry.register(Registries.BLOCK, slabBlockKey.getValue(), slab);
+		Registry.register(BuiltInRegistries.BLOCK, slabBlockKey.identifier(), slab);
 
-		RegistryKey<Item> slabItemKey = RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MOD_ID, slabName));
-		Registry.register(Registries.ITEM, slabItemKey.getValue(),
-			new BlockItem(slab, new Item.Settings().registryKey(slabItemKey)));
+		ResourceKey<Item> slabItemKey = ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(MOD_ID, slabName));
+		Registry.register(BuiltInRegistries.ITEM, slabItemKey.identifier(),
+			new BlockItem(slab, new Item.Properties().setId(slabItemKey)));
 		WALL_POST_SLABS.add(slab);
 
 		return post;
