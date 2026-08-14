@@ -35,15 +35,11 @@ Cobblestone, Mossy Cobblestone, Stone Brick, Mossy Stone Brick, Brick, Mud Brick
 
 ## Requirements
 
-- Minecraft 1.21+
-- Fabric Loader 0.18.1+
-- Fabric API
+Targets the Minecraft, Fabric Loader, and Fabric API versions declared in this mod's `gradle.properties`. Check there for the exact currently-supported version.
 
 ## Installation
 
-1. Install [Fabric Loader](https://fabricmc.net/use/)
-2. Install [Fabric API](https://modrinth.com/mod/fabric-api)
-3. Download the mod JAR and place it in your `mods` folder
+Install alongside its declared dependencies (see `fabric.mod.json`), then place the mod JAR in your `mods` folder.
 
 ## For Mod Developers
 
