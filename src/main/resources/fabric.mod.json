@@ -9,6 +9,7 @@
 		"sources": "https://github.com/fatlard1993/fence-posts"
 	},
 	"license": "MIT",
+	"icon": "assets/fence-posts/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": ["justfatlard.fence_posts.Main"]
