@@ -1,5 +1,8 @@
 package justfatlard.fence_posts;
 
+import justfatlard.pandorical.api.BlockRegistration;
+import justfatlard.pandorical.api.ItemRegistration;
+import justfatlard.pandorical.api.PandoricalApi;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
 import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
@@ -112,9 +115,35 @@ public class Main implements ModInitializer {
 
 		Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, Identifier.fromNamespaceAndPath(MOD_ID, "posts"), postGroup);
 
+		PandoricalApi.content().registerModAssets(MOD_ID);
+
 		int total = FENCE_POSTS.size() + FENCE_POST_SLABS.size() + WALL_POSTS.size() + WALL_POST_SLABS.size();
 		LOGGER.info("Registered {} blocks ({} fence posts, {} fence post slabs, {} wall posts, {} wall post slabs)",
 			total, FENCE_POSTS.size(), FENCE_POST_SLABS.size(), WALL_POSTS.size(), WALL_POST_SLABS.size());
+	}
+
+	/**
+	 * Mirror a post (or post slab) and its BlockItem into Pandorical's content registry.
+	 * Blocks that exist only in vanilla's registries reach Pandorical clients through
+	 * auto-detection, which guesses a base block from the sound type; naming the real
+	 * vanilla counterpart gives the client the right properties for the block it builds.
+	 *
+	 * @param name Registry path, e.g. "oak_fence_post" or "oak_fence_post_slab"
+	 * @param vanillaBaseId Vanilla block to copy properties from, e.g. "minecraft:oak_fence"
+	 * @param slab Whether this is the half-height slab variant
+	 */
+	private static void registerPandoricalContent(String name, String vanillaBaseId, boolean slab) {
+		if (!PandoricalApi.isAvailable()) return;
+
+		BlockRegistration block = new BlockRegistration()
+			.baseBlock(vanillaBaseId)
+			.property("waterlogged")
+			.model(MOD_ID + ":block/" + name + (slab ? "_bottom" : ""));
+		if (slab) block.property("type");
+
+		PandoricalApi.content().registerBlock(MOD_ID + ":" + name, block);
+		PandoricalApi.content().registerItem(MOD_ID + ":" + name, new ItemRegistration()
+			.model(MOD_ID + ":item/" + name));
 	}
 
 	/**
@@ -132,11 +161,15 @@ public class Main implements ModInitializer {
 	public static PostBlock registerFencePost(String baseName, SoundType soundGroup, boolean burnable, boolean requiresTool, float hardness, float resistance, MapColor mapColor) {
 		String postName = baseName + "_fence_post";
 		String slabName = baseName + "_fence_post_slab";
+		String vanillaBaseId = "minecraft:" + baseName + "_fence";
 
 		if (registeredPosts.contains(postName)) {
 			return null;
 		}
 		registeredPosts.add(postName);
+
+		registerPandoricalContent(postName, vanillaBaseId, false);
+		registerPandoricalContent(slabName, vanillaBaseId, true);
 
 		// Full post
 		ResourceKey<Block> postBlockKey = ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MOD_ID, postName));
@@ -199,11 +232,15 @@ public class Main implements ModInitializer {
 	public static PostBlock registerWallPost(String baseName, SoundType soundGroup, float hardness, float resistance, MapColor mapColor) {
 		String postName = baseName + "_wall_post";
 		String slabName = baseName + "_wall_post_slab";
+		String vanillaBaseId = "minecraft:" + baseName + "_wall";
 
 		if (registeredPosts.contains(postName)) {
 			return null;
 		}
 		registeredPosts.add(postName);
+
+		registerPandoricalContent(postName, vanillaBaseId, false);
+		registerPandoricalContent(slabName, vanillaBaseId, true);
 
 		// Full post
 		ResourceKey<Block> postBlockKey = ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MOD_ID, postName));
