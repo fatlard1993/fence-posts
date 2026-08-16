@@ -33,10 +33,6 @@ Cobblestone, Mossy Cobblestone, Stone Brick, Mossy Stone Brick, Brick, Mud Brick
 - **1 Wall → 2 Wall Posts**
 - **1 Post → 2 Post Slabs**
 
-## Requirements
-
-Targets the Minecraft, Fabric Loader, and Fabric API versions declared in this mod's `gradle.properties`. Check there for the exact currently-supported version.
-
 ## Pandorical
 
 Fence Posts runs server-side, and Pandorical is a hard dependency (`fabric.mod.json`): the server will not load this mod without it. All 76 post blocks and their items are mirrored into Pandorical's content registry, and the mod's assets are synced with `registerModAssets`.
@@ -45,7 +41,7 @@ Clients are the optional half. A player on a Pandorical client sees the posts; a
 
 ## Installation
 
-Install server-side alongside its declared dependencies (see `fabric.mod.json`). Connecting clients need only Pandorical.
+Install server-side alongside its declared dependencies (see `fabric.mod.json`); connecting clients need only Pandorical. Version targets live in `gradle.properties` (Minecraft, loader, Fabric API) and `fabric.mod.json` (Java).
 
 ## For Mod Developers
 
@@ -70,4 +66,4 @@ Each call registers the post, its slab variant, and both BlockItems, and mirrors
 
 ## License
 
-MIT License - see [LICENSE](LICENSE) for details.
+MIT, see [LICENSE](LICENSE).
