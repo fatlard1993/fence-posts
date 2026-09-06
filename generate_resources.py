@@ -158,13 +158,15 @@ def create_loot_table(name):
         "pools": [{
             "rolls": 1,
             "entries": [{"type": "minecraft:item", "name": f"{MOD_ID}:{name}"}],
-            "conditions": [{"condition": "minecraft:survives_explosion"}]
+            "condition": {"type": "minecraft:survives_explosion"}
         }]
     }
 
 
 def create_slab_loot_table(name):
-    """Slab drops 1 normally, 2 when double."""
+    """Slab drops 1 normally, 2 when double. The game's current loot shape: one condition object,
+    the state read with match_block, functions under "modifier"; the older list shape loads and
+    does nothing."""
     return {
         "type": "minecraft:block",
         "pools": [{
@@ -172,17 +174,17 @@ def create_slab_loot_table(name):
             "entries": [{
                 "type": "minecraft:item",
                 "name": f"{MOD_ID}:{name}",
-                "functions": [{
-                    "function": "minecraft:set_count",
+                "modifier": [{
+                    "type": "minecraft:set_count",
                     "count": 2,
-                    "conditions": [{
-                        "condition": "minecraft:block_state_property",
-                        "block": f"{MOD_ID}:{name}",
-                        "properties": {"type": "double"}
-                    }]
+                    "condition": {
+                        "type": "minecraft:match_block",
+                        "blocks": f"{MOD_ID}:{name}",
+                        "state": {"type": "double"}
+                    }
                 }]
             }],
-            "conditions": [{"condition": "minecraft:survives_explosion"}]
+            "condition": {"type": "minecraft:survives_explosion"}
         }]
     }
 
