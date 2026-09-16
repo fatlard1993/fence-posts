@@ -1,7 +1,8 @@
 {
 	"type": "minecraft:crafting_shapeless",
+	"category": "building",
 	"ingredients": [
-		"fence-posts:spruce_fence_post"
+		"minecraft:spruce_fence"
 	],
 	"result": {
 		"id": "fence-posts:spruce_fence_post_slab",

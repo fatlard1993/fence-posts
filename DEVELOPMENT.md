@@ -23,6 +23,8 @@ PostBlock post = Main.registerFencePost("oak", SoundType.WOOD, true, false, 2.0f
 PostBlock wallPost = Main.registerWallPost("cobblestone", SoundType.STONE, 2.0f, 6.0f, MapColor.STONE);
 ```
 
+A modded fence or wall needs neither to be a post: the sneak-click toggle (`PostToggle`) works on any `FenceBlock` or `WallBlock`, marking the spot through Pandorical's block marks and keeping the marked positions in each level's saved data (`Posts`). The post blocks these calls register have no recipe and no creative entry; they are kept so worlds that already hold one keep it.
+
 Each call registers the post, its slab variant, and both BlockItems, and mirrors all four into Pandorical's content registry. Call them during `onInitialize`, before Pandorical's content sync runs. A repeat registration of the same name returns `null` rather than throwing.
 
 **These are not yet usable for modded blocks.** `baseName` is resolved against the vanilla namespace (`minecraft:<baseName>_fence` / `_wall`) to derive models and textures, so the methods currently only reach blocks vanilla already has. Supporting a modded base block means letting the caller pass the base identifier; the two methods are public because that change is intended, not because it already works.

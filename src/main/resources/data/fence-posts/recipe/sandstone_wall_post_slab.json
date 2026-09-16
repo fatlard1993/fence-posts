@@ -1,7 +1,8 @@
 {
 	"type": "minecraft:crafting_shapeless",
+	"category": "building",
 	"ingredients": [
-		"fence-posts:sandstone_wall_post"
+		"minecraft:sandstone_wall"
 	],
 	"result": {
 		"id": "fence-posts:sandstone_wall_post_slab",

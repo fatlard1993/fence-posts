@@ -1,7 +1,8 @@
 {
 	"type": "minecraft:crafting_shapeless",
+	"category": "building",
 	"ingredients": [
-		"fence-posts:bamboo_fence_post"
+		"minecraft:bamboo_fence"
 	],
 	"result": {
 		"id": "fence-posts:bamboo_fence_post_slab",

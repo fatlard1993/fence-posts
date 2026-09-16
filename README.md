@@ -1,6 +1,6 @@
 # Fence Posts
 
-A Minecraft Fabric mod that adds standalone fence and wall posts with half-height slab variants.
+A Minecraft Fabric mod that lets any fence or wall stand alone as a post, with half-height post slabs.
 
 ## Screenshots
 
@@ -8,30 +8,29 @@ A Minecraft Fabric mod that adds standalone fence and wall posts with half-heigh
 |:-----------:|:----------:|
 | ![Fence Posts](images/screenshot2.png) | ![Wall Posts](images/screenshot3.png) |
 
-![Creative Inventory](images/screenshot4.png)
-
 ## Features
 
-- **Fence Posts** - Standalone 4x4 pixel posts for all vanilla fence types (13 variants)
-- **Wall Posts** - Standalone 8x8 pixel posts for all vanilla wall types (25 variants)
-- **Slab Variants** - Half-height versions of all posts that can be stacked
-- **Waterlogging** - All posts support waterlogging
-- **Lead Attachment** - Fence posts support attaching leads (just like vanilla fences)
-- **Creative Tab** - Dedicated "Fence & Wall Posts" creative tab
+- **Posts** - Sneak and click any fence or wall with an empty hand and it stands alone as a post; click again and it joins back in. Every fence and wall the game has, and any a mod adds. A post crafted in an older version becomes the fence or wall it stood for, standing alone, with the same click
+- **Post Slabs** - Half-height posts for the 13 vanilla fences and 25 vanilla walls, stackable into a double
+- **Mixed Slabs** - With Mixed Slabs installed, a post slab goes in the empty half of any other slab
+- **Waterlogging** - Post slabs support waterlogging
 
 ## Supported Blocks
 
-### Fence Posts
+Posts work on every fence and wall; post slabs come in these materials.
+
+### Fence Post Slabs
 Oak, Spruce, Birch, Jungle, Acacia, Dark Oak, Mangrove, Cherry, Bamboo, Crimson, Warped, Pale Oak, Nether Brick
 
-### Wall Posts
+### Wall Post Slabs
 Cobblestone, Mossy Cobblestone, Stone Brick, Mossy Stone Brick, Brick, Mud Brick, Sandstone, Red Sandstone, Granite, Diorite, Andesite, Prismarine, Nether Brick, Red Nether Brick, End Stone Brick, Blackstone, Polished Blackstone, Polished Blackstone Brick, Cobbled Deepslate, Polished Deepslate, Deepslate Brick, Deepslate Tile, Tuff, Polished Tuff, Tuff Brick
 
 ## Crafting
 
-- **1 Fence → 2 Fence Posts**
-- **1 Wall → 2 Wall Posts**
-- **1 Post → 2 Post Slabs**
+- **1 Fence → 2 Fence Post Slabs**
+- **1 Wall → 2 Wall Post Slabs**
+
+Posts are not crafted: every fence and wall is already one, a sneak-click away.
 
 ## Pandorical
 

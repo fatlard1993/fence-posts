@@ -1,7 +1,8 @@
 {
 	"type": "minecraft:crafting_shapeless",
+	"category": "building",
 	"ingredients": [
-		"fence-posts:warped_fence_post"
+		"minecraft:warped_fence"
 	],
 	"result": {
 		"id": "fence-posts:warped_fence_post_slab",

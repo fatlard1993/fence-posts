@@ -93,27 +93,9 @@ public class Main implements ModInitializer {
 		registerWallPost("polished_tuff", SoundType.POLISHED_TUFF, 1.5f, 6.0f, MapColor.TERRACOTTA_GRAY);
 		registerWallPost("tuff_brick", SoundType.TUFF_BRICKS, 1.5f, 6.0f, MapColor.TERRACOTTA_GRAY);
 
-		// Item group
-		CreativeModeTab postGroup = FabricCreativeModeTab.builder()
-			.title(Component.literal("Fence & Wall Posts"))
-			.icon(() -> FENCE_POSTS.isEmpty() ? ItemStack.EMPTY : new ItemStack(FENCE_POSTS.get(0)))
-			.displayItems((context, entries) -> {
-				for (int i = 0; i < FENCE_POSTS.size(); i++) {
-					entries.accept(new ItemStack(FENCE_POSTS.get(i)));
-					if (i < FENCE_POST_SLABS.size()) {
-						entries.accept(new ItemStack(FENCE_POST_SLABS.get(i)));
-					}
-				}
-				for (int i = 0; i < WALL_POSTS.size(); i++) {
-					entries.accept(new ItemStack(WALL_POSTS.get(i)));
-					if (i < WALL_POST_SLABS.size()) {
-						entries.accept(new ItemStack(WALL_POST_SLABS.get(i)));
-					}
-				}
-			})
-			.build();
-
-		Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, Identifier.fromNamespaceAndPath(MOD_ID, "posts"), postGroup);
+		// The crafted posts are kept so a world that has them keeps them; there is no recipe and
+		// no creative entry for them any more. A post is a fence told to stand alone, see PostToggle.
+		PostToggle.register();
 
 		PandoricalApi.content().registerModAssets(MOD_ID);
 

@@ -1,7 +1,8 @@
 {
 	"type": "minecraft:crafting_shapeless",
+	"category": "building",
 	"ingredients": [
-		"fence-posts:deepslate_brick_wall_post"
+		"minecraft:deepslate_brick_wall"
 	],
 	"result": {
 		"id": "fence-posts:deepslate_brick_wall_post_slab",
