@@ -4,14 +4,19 @@
 	],
 	"versions": {
 		"3.0.0": [
-			"A post is a mark on a fence now, not a block of its own: sneak-click any fence or wall with an empty hand and it stands alone, click again and it joins back in. Modded fences and walls included, which the old 38 crafted blocks could never be.",
-			"The crafted posts, their recipes and the creative tab are gone. A post you built in an older version becomes the fence or wall it stood for, standing alone, with the same click. Post slabs craft straight from the fence or wall, one step instead of two."
+			"A post is a mark on a fence, not a block of its own.",
+			"Sneak-click any fence or wall with an empty hand and it stands alone; click again to rejoin.",
+			"Modded fences and walls included, which the old crafted blocks could never be.",
+			"The crafted posts, their recipes and the creative tab are gone.",
+			"A post built in an older version becomes the fence or wall it stood for, standing alone.",
+			"Post slabs craft straight from the fence or wall, one step instead of two."
 		],
 		"2.0.1": [
 			"A double post slab drops two, the way the game drops everything else."
 		],
 		"2.0.0": [
-			"Standalone posts for every vanilla fence and wall, plus post slabs for 13 fences and 25 walls: stackable into a double, waterloggable, and happy in the empty half of a mixed slab.",
+			"Standalone posts for every vanilla fence and wall, plus post slabs for 13 fences and 25 walls.",
+			"Stackable into a double, waterloggable, and happy in the empty half of a mixed slab.",
 			"Every recipe brings the advancement that unlocks it."
 		]
 	}
