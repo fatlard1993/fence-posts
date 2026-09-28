@@ -17,7 +17,7 @@
 		"2.0.0": [
 			"Standalone posts for every vanilla fence and wall, plus post slabs for 13 fences and 25 walls.",
 			"Stackable into a double, waterloggable, and happy in the empty half of a mixed slab.",
-			"Every recipe brings the advancement that unlocks it."
+			"Each post recipe has its own advancement."
 		]
 	}
 }
