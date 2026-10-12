@@ -3,6 +3,9 @@
 		"Any fence or wall can stand alone as a post, with half-height post slabs to go under them."
 	],
 	"versions": {
+		"3.0.1": [
+			"Click a fence with a lead, then another fence, and the lead runs between them, no chicken needed."
+		],
 		"3.0.0": [
 			"A post is a mark on a fence, not a block of its own.",
 			"Sneak-click any fence or wall with an empty hand and it stands alone; click again to rejoin.",

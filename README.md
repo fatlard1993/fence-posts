@@ -14,6 +14,7 @@ A Minecraft Fabric mod that lets any fence or wall stand alone as a post, with h
 - **Post Slabs** - Half-height posts for the 13 vanilla fences and 25 vanilla walls, stackable into a double
 - **Mixed Slabs** - With Mixed Slabs installed, a post slab goes in the empty half of any other slab
 - **Waterlogging** - Post slabs support waterlogging
+- **Fence Leads** - Click a fence holding a lead, then another fence, and the lead runs from one to the other, with no chicken or boat tied on to hold it. Players without Pandorical see it too
 
 ## Supported Blocks
 

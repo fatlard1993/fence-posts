@@ -96,6 +96,8 @@ public class Main implements ModInitializer {
 		// The crafted posts are kept so a world that has them keeps them; there is no recipe and
 		// no creative entry for them any more. A post is a fence told to stand alone, see PostToggle.
 		PostToggle.register();
+		// A lead from fence to fence, held at the near end by a golem nobody sees; see FenceLeads.
+		FenceLeads.register();
 
 		PandoricalApi.content().registerModAssets(MOD_ID);
 
