@@ -35,9 +35,7 @@ Posts are not crafted: every fence and wall is already one, a sneak-click away.
 
 ## Pandorical
 
-Fence Posts runs server-side, and Pandorical is required: the server will not load this mod without it. All 76 post blocks and their items are mirrored into Pandorical's content registry, and their textures and models arrive through Pandorical's content sync.
-
-Clients are the optional half. A player on a Pandorical client sees the posts; a player on a vanilla client cannot render them, and because these are real registered blocks, cannot receive chunks containing one.
+Fence Posts goes on the server only, and **Pandorical is required there and on every player's client**: the posts are new blocks, and a client without Pandorical has no entry for them.
 
 ## Development
 
