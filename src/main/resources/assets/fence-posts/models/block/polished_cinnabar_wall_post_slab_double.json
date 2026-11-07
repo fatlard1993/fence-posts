@@ -1,0 +1,6 @@
+{
+	"parent": "fence-posts:block/parent/wall_post",
+	"textures": {
+		"texture": "minecraft:block/polished_cinnabar"
+	}
+}

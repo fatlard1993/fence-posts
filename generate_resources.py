@@ -58,6 +58,7 @@ FENCE_TYPES = [
     ("warped", "minecraft:block/warped_planks", False, "axe"),
     ("pale_oak", "minecraft:block/pale_oak_planks", True, "axe"),
     ("nether_brick", "minecraft:block/nether_bricks", False, "pickaxe"),
+    ("poplar", "minecraft:block/poplar_planks", True, "axe"),
 ]
 
 # Wall types: (base_name, texture) -- all pickaxe-mineable
@@ -87,7 +88,26 @@ WALL_TYPES = [
     ("tuff", "minecraft:block/tuff"),
     ("polished_tuff", "minecraft:block/polished_tuff"),
     ("tuff_brick", "minecraft:block/tuff_bricks"),
+    ("resin_brick", "minecraft:block/resin_bricks"),
+    ("cinnabar", "minecraft:block/cinnabar"),
+    ("cinnabar_brick", "minecraft:block/cinnabar_bricks"),
+    ("polished_cinnabar", "minecraft:block/polished_cinnabar"),
+    ("sulfur", "minecraft:block/sulfur"),
+    ("sulfur_brick", "minecraft:block/sulfur_bricks"),
+    ("polished_sulfur", "minecraft:block/polished_sulfur"),
 ]
+
+# Materials that had a crafted post before 3.0. Those blocks stay registered, with no recipe, so
+# worlds holding one keep it; materials added since get the slab alone.
+LEGACY_POSTS = {
+    "oak", "spruce", "birch", "jungle", "acacia", "dark_oak", "mangrove", "cherry", "bamboo",
+    "crimson", "warped", "pale_oak", "nether_brick",
+    "cobblestone", "mossy_cobblestone", "stone_brick", "mossy_stone_brick", "brick", "mud_brick",
+    "sandstone", "red_sandstone", "granite", "diorite", "andesite", "prismarine", "red_nether_brick",
+    "end_stone_brick", "blackstone", "polished_blackstone", "polished_blackstone_brick",
+    "cobbled_deepslate", "polished_deepslate", "deepslate_brick", "deepslate_tile", "tuff",
+    "polished_tuff", "tuff_brick",
+}
 
 
 def ensure_dir(path):
@@ -134,21 +154,32 @@ def create_item_definition(name):
     return {"model": {"type": "minecraft:model", "model": f"{MOD_ID}:item/{name}"}}
 
 
-def create_post_recipe(name, ingredient):
-    """Recipe: 1 source block -> 2 posts."""
+def create_slab_recipe(name, source):
+    """Recipe: 1 fence or wall -> 2 slabs."""
     return {
         "type": "minecraft:crafting_shapeless",
-        "ingredients": [ingredient],
+        "category": "building",
+        "ingredients": [source],
         "result": {"id": f"{MOD_ID}:{name}", "count": 2}
     }
 
 
-def create_slab_recipe(name, post_name):
-    """Recipe: 1 post -> 2 slabs."""
+def create_slab_advancement(name, source):
+    """Unlocks the slab recipe on first holding its fence or wall."""
     return {
-        "type": "minecraft:crafting_shapeless",
-        "ingredients": [f"{MOD_ID}:{post_name}"],
-        "result": {"id": f"{MOD_ID}:{name}", "count": 2}
+        "parent": "minecraft:recipes/root",
+        "criteria": {
+            "has_ingredient": {
+                "conditions": {"items": [{"items": source}]},
+                "trigger": "minecraft:inventory_changed"
+            },
+            "has_the_recipe": {
+                "conditions": {"recipes": f"{MOD_ID}:{name}"},
+                "trigger": "minecraft:recipe_unlocked"
+            }
+        },
+        "requirements": [["has_the_recipe", "has_ingredient"]],
+        "rewards": {"recipes": [f"{MOD_ID}:{name}"]}
     }
 
 
@@ -197,10 +228,12 @@ def create_tag(values):
     }
 
 
-def write_json(path, data):
+def write_json(path, data, indent='\t', newline=False):
     ensure_dir(os.path.dirname(path))
     with open(path, 'w') as f:
-        json.dump(data, f, indent='\t')
+        json.dump(data, f, indent=indent)
+        if newline:
+            f.write('\n')
 
 
 def main():
@@ -231,34 +264,35 @@ def main():
                    create_parent_model(inset, y_from, y_to))
     print(f"Generated {len(parents)} parent models")
 
-    # Generate fence posts and slabs
-    for base, texture, burnable, tool in FENCE_TYPES:
-        post_name = f"{base}_fence_post"
-        slab_name = f"{base}_fence_post_slab"
-        post_id = f"{MOD_ID}:{post_name}"
-        slab_id = f"{MOD_ID}:{slab_name}"
+    kinds = [(base, texture, tool, "fence") for base, texture, _, tool in FENCE_TYPES]
+    kinds += [(base, texture, "pickaxe", "wall") for base, texture in WALL_TYPES]
+    for base, texture, tool, kind in kinds:
+        post_name = f"{base}_{kind}_post"
+        slab_name = f"{base}_{kind}_post_slab"
+        source = f"minecraft:{base}_{kind}"
+        ids = [f"{MOD_ID}:{slab_name}"]
 
-        # Full post -- child model referencing parent
-        write_json(f"{assets_path}/models/block/{post_name}.json",
-                   create_child_model("fence_post", texture))
-        write_json(f"{assets_path}/blockstates/{post_name}.json",
-                   create_simple_blockstate(post_name))
-        write_json(f"{assets_path}/models/item/{post_name}.json",
-                   create_item_model(post_name))
-        write_json(f"{assets_path}/items/{post_name}.json",
-                   create_item_definition(post_name))
-        write_json(f"{data_path}/recipe/{post_name}.json",
-                   create_post_recipe(post_name, f"minecraft:{base}_fence"))
-        write_json(f"{data_path}/loot_table/blocks/{post_name}.json",
-                   create_loot_table(post_name))
+        if base in LEGACY_POSTS:
+            ids.insert(0, f"{MOD_ID}:{post_name}")
+            write_json(f"{assets_path}/models/block/{post_name}.json",
+                       create_child_model(f"{kind}_post", texture))
+            write_json(f"{assets_path}/blockstates/{post_name}.json",
+                       create_simple_blockstate(post_name))
+            write_json(f"{assets_path}/models/item/{post_name}.json",
+                       create_item_model(post_name))
+            write_json(f"{assets_path}/items/{post_name}.json",
+                       create_item_definition(post_name))
+            write_json(f"{data_path}/loot_table/blocks/{post_name}.json",
+                       create_loot_table(post_name), indent=2, newline=True)
+            lang[f"block.{MOD_ID}.{post_name}"] = post_name.replace("_", " ").title()
+            stats[f"{kind}_posts"] += 1
 
-        # Slab -- bottom, top, double child models
         write_json(f"{assets_path}/models/block/{slab_name}_bottom.json",
-                   create_child_model("fence_post_slab_bottom", texture))
+                   create_child_model(f"{kind}_post_slab_bottom", texture))
         write_json(f"{assets_path}/models/block/{slab_name}_top.json",
-                   create_child_model("fence_post_slab_top", texture))
+                   create_child_model(f"{kind}_post_slab_top", texture))
         write_json(f"{assets_path}/models/block/{slab_name}_double.json",
-                   create_child_model("fence_post", texture))
+                   create_child_model(f"{kind}_post", texture))
         write_json(f"{assets_path}/blockstates/{slab_name}.json",
                    create_slab_blockstate(slab_name))
         write_json(f"{assets_path}/models/item/{slab_name}.json",
@@ -266,73 +300,16 @@ def main():
         write_json(f"{assets_path}/items/{slab_name}.json",
                    create_item_definition(slab_name))
         write_json(f"{data_path}/recipe/{slab_name}.json",
-                   create_slab_recipe(slab_name, post_name))
+                   create_slab_recipe(slab_name, source), newline=True)
+        write_json(f"{data_path}/advancement/recipes/building/{slab_name}.json",
+                   create_slab_advancement(slab_name, source), indent=2, newline=True)
         write_json(f"{data_path}/loot_table/blocks/{slab_name}.json",
-                   create_slab_loot_table(slab_name))
-
-        # Language
-        lang[f"block.{MOD_ID}.{post_name}"] = post_name.replace("_", " ").title()
+                   create_slab_loot_table(slab_name), indent=2, newline=True)
         lang[f"block.{MOD_ID}.{slab_name}"] = slab_name.replace("_", " ").title()
+        stats[f"{kind}_slabs"] += 1
 
-        # Tags
-        if tool == "axe":
-            axe_mineable.extend([post_id, slab_id])
-        else:
-            pickaxe_mineable.extend([post_id, slab_id])
-        fence_tag_entries.extend([post_id, slab_id])
-
-        stats["fence_posts"] += 1
-        stats["fence_slabs"] += 1
-
-    # Generate wall posts and slabs
-    for base, texture in WALL_TYPES:
-        post_name = f"{base}_wall_post"
-        slab_name = f"{base}_wall_post_slab"
-        post_id = f"{MOD_ID}:{post_name}"
-        slab_id = f"{MOD_ID}:{slab_name}"
-
-        # Full post
-        write_json(f"{assets_path}/models/block/{post_name}.json",
-                   create_child_model("wall_post", texture))
-        write_json(f"{assets_path}/blockstates/{post_name}.json",
-                   create_simple_blockstate(post_name))
-        write_json(f"{assets_path}/models/item/{post_name}.json",
-                   create_item_model(post_name))
-        write_json(f"{assets_path}/items/{post_name}.json",
-                   create_item_definition(post_name))
-        write_json(f"{data_path}/recipe/{post_name}.json",
-                   create_post_recipe(post_name, f"minecraft:{base}_wall"))
-        write_json(f"{data_path}/loot_table/blocks/{post_name}.json",
-                   create_loot_table(post_name))
-
-        # Slab
-        write_json(f"{assets_path}/models/block/{slab_name}_bottom.json",
-                   create_child_model("wall_post_slab_bottom", texture))
-        write_json(f"{assets_path}/models/block/{slab_name}_top.json",
-                   create_child_model("wall_post_slab_top", texture))
-        write_json(f"{assets_path}/models/block/{slab_name}_double.json",
-                   create_child_model("wall_post", texture))
-        write_json(f"{assets_path}/blockstates/{slab_name}.json",
-                   create_slab_blockstate(slab_name))
-        write_json(f"{assets_path}/models/item/{slab_name}.json",
-                   {"parent": f"{MOD_ID}:block/{slab_name}_bottom"})
-        write_json(f"{assets_path}/items/{slab_name}.json",
-                   create_item_definition(slab_name))
-        write_json(f"{data_path}/recipe/{slab_name}.json",
-                   create_slab_recipe(slab_name, post_name))
-        write_json(f"{data_path}/loot_table/blocks/{slab_name}.json",
-                   create_slab_loot_table(slab_name))
-
-        # Language
-        lang[f"block.{MOD_ID}.{post_name}"] = post_name.replace("_", " ").title()
-        lang[f"block.{MOD_ID}.{slab_name}"] = slab_name.replace("_", " ").title()
-
-        # Tags -- all wall posts are pickaxe-mineable
-        pickaxe_mineable.extend([post_id, slab_id])
-        wall_tag_entries.extend([post_id, slab_id])
-
-        stats["wall_posts"] += 1
-        stats["wall_slabs"] += 1
+        (axe_mineable if tool == "axe" else pickaxe_mineable).extend(ids)
+        (fence_tag_entries if kind == "fence" else wall_tag_entries).extend(ids)
 
     # Write language file
     write_json(f"{assets_path}/lang/en_us.json", lang)

@@ -1,0 +1,6 @@
+{
+	"parent": "fence-posts:block/parent/wall_post_slab_bottom",
+	"textures": {
+		"texture": "minecraft:block/cinnabar_bricks"
+	}
+}

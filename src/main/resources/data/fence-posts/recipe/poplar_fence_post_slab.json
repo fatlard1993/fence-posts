@@ -1,0 +1,11 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"category": "building",
+	"ingredients": [
+		"minecraft:poplar_fence"
+	],
+	"result": {
+		"id": "fence-posts:poplar_fence_post_slab",
+		"count": 2
+	}
+}

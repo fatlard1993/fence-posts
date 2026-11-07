@@ -52,6 +52,13 @@
 		"fence-posts:polished_tuff_wall_post",
 		"fence-posts:polished_tuff_wall_post_slab",
 		"fence-posts:tuff_brick_wall_post",
-		"fence-posts:tuff_brick_wall_post_slab"
+		"fence-posts:tuff_brick_wall_post_slab",
+		"fence-posts:resin_brick_wall_post_slab",
+		"fence-posts:cinnabar_wall_post_slab",
+		"fence-posts:cinnabar_brick_wall_post_slab",
+		"fence-posts:polished_cinnabar_wall_post_slab",
+		"fence-posts:sulfur_wall_post_slab",
+		"fence-posts:sulfur_brick_wall_post_slab",
+		"fence-posts:polished_sulfur_wall_post_slab"
 	]
 }

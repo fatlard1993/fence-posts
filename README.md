@@ -11,7 +11,7 @@ A Minecraft Fabric mod that lets any fence or wall stand alone as a post, with h
 ## Features
 
 - **Posts** - Sneak and click any fence or wall with an empty hand and it stands alone as a post; click again and it joins back in. Every fence and wall the game has, and any a mod adds. A post crafted in an older version becomes the fence or wall it stood for, standing alone, with the same click
-- **Post Slabs** - Half-height posts for the 13 vanilla fences and 25 vanilla walls, stackable into a double
+- **Post Slabs** - Half-height posts for every vanilla fence and wall (14 fences, 32 walls), stackable into a double
 - **Mixed Slabs** - With Mixed Slabs installed, a post slab goes in the empty half of any other slab
 - **Waterlogging** - Post slabs support waterlogging
 - **Fence Leads** - Click a fence holding a lead, then another fence, and the lead runs from one to the other, with no chicken or boat tied on to hold it. Players without Pandorical see it too
@@ -21,10 +21,10 @@ A Minecraft Fabric mod that lets any fence or wall stand alone as a post, with h
 Posts work on every fence and wall; post slabs come in these materials.
 
 ### Fence Post Slabs
-Oak, Spruce, Birch, Jungle, Acacia, Dark Oak, Mangrove, Cherry, Bamboo, Crimson, Warped, Pale Oak, Nether Brick
+Oak, Spruce, Birch, Jungle, Acacia, Dark Oak, Mangrove, Cherry, Pale Oak, Poplar, Bamboo, Crimson, Warped, Nether Brick
 
 ### Wall Post Slabs
-Cobblestone, Mossy Cobblestone, Stone Brick, Mossy Stone Brick, Brick, Mud Brick, Sandstone, Red Sandstone, Granite, Diorite, Andesite, Prismarine, Nether Brick, Red Nether Brick, End Stone Brick, Blackstone, Polished Blackstone, Polished Blackstone Brick, Cobbled Deepslate, Polished Deepslate, Deepslate Brick, Deepslate Tile, Tuff, Polished Tuff, Tuff Brick
+Cobblestone, Mossy Cobblestone, Stone Brick, Mossy Stone Brick, Brick, Mud Brick, Sandstone, Red Sandstone, Granite, Diorite, Andesite, Prismarine, Nether Brick, Red Nether Brick, End Stone Brick, Blackstone, Polished Blackstone, Polished Blackstone Brick, Cobbled Deepslate, Polished Deepslate, Deepslate Brick, Deepslate Tile, Tuff, Polished Tuff, Tuff Brick, Resin Brick, Cinnabar, Cinnabar Brick, Polished Cinnabar, Sulfur, Sulfur Brick, Polished Sulfur
 
 ## Crafting
 

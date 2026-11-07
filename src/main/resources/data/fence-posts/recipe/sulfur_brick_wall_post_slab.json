@@ -1,0 +1,11 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"category": "building",
+	"ingredients": [
+		"minecraft:sulfur_brick_wall"
+	],
+	"result": {
+		"id": "fence-posts:sulfur_brick_wall_post_slab",
+		"count": 2
+	}
+}

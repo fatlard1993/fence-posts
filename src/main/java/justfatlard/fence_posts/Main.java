@@ -4,18 +4,14 @@ import justfatlard.pandorical.api.BlockRegistration;
 import justfatlard.pandorical.api.ItemRegistration;
 import justfatlard.pandorical.api.PandoricalApi;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
 import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -41,7 +37,7 @@ public class Main implements ModInitializer {
 	private static final List<Block> WALL_POSTS = new ArrayList<>();
 	private static final List<Block> WALL_POST_SLABS = new ArrayList<>();
 
-	private static final Set<String> registeredPosts = new HashSet<>();
+	private static final Set<String> registered = new HashSet<>();
 
 	public static List<Block> getFencePosts() { return Collections.unmodifiableList(FENCE_POSTS); }
 	public static List<Block> getFencePostSlabs() { return Collections.unmodifiableList(FENCE_POST_SLABS); }
@@ -93,6 +89,16 @@ public class Main implements ModInitializer {
 		registerWallPost("polished_tuff", SoundType.POLISHED_TUFF, 1.5f, 6.0f, MapColor.TERRACOTTA_GRAY);
 		registerWallPost("tuff_brick", SoundType.TUFF_BRICKS, 1.5f, 6.0f, MapColor.TERRACOTTA_GRAY);
 
+		// The game's fences and walls that never had a crafted post: a slab, and no legacy post to keep.
+		registerFencePostSlab("poplar", SoundType.WOOD, true, false, 2.0f, 3.0f, MapColor.COLOR_LIGHT_GRAY);
+		registerWallPostSlab("resin_brick", SoundType.RESIN_BRICKS, 1.5f, 6.0f, MapColor.TERRACOTTA_ORANGE);
+		registerWallPostSlab("cinnabar", SoundType.CINNABAR, 1.5f, 6.0f, MapColor.COLOR_RED);
+		registerWallPostSlab("cinnabar_brick", SoundType.CINNABAR, 1.5f, 6.0f, MapColor.COLOR_RED);
+		registerWallPostSlab("polished_cinnabar", SoundType.CINNABAR, 1.5f, 6.0f, MapColor.COLOR_RED);
+		registerWallPostSlab("sulfur", SoundType.SULFUR, 1.5f, 6.0f, MapColor.COLOR_YELLOW);
+		registerWallPostSlab("sulfur_brick", SoundType.SULFUR, 1.5f, 6.0f, MapColor.COLOR_YELLOW);
+		registerWallPostSlab("polished_sulfur", SoundType.SULFUR, 1.5f, 6.0f, MapColor.COLOR_YELLOW);
+
 		// The crafted posts are kept so a world that has them keeps them; there is no recipe and
 		// no creative entry for them any more. A post is a fence told to stand alone, see PostToggle.
 		PostToggle.register();
@@ -143,62 +149,8 @@ public class Main implements ModInitializer {
 	 * @return The registered PostBlock, or null if already registered
 	 */
 	public static PostBlock registerFencePost(String baseName, SoundType soundGroup, boolean burnable, boolean requiresTool, float hardness, float resistance, MapColor mapColor) {
-		String postName = baseName + "_fence_post";
-		String slabName = baseName + "_fence_post_slab";
-		String vanillaBaseId = "minecraft:" + baseName + "_fence";
-
-		if (registeredPosts.contains(postName)) {
-			return null;
-		}
-		registeredPosts.add(postName);
-
-		registerPandoricalContent(postName, vanillaBaseId, false);
-		registerPandoricalContent(slabName, vanillaBaseId, true);
-
-		// Full post
-		ResourceKey<Block> postBlockKey = ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MOD_ID, postName));
-		BlockBehaviour.Properties postSettings = BlockBehaviour.Properties.of()
-			.setId(postBlockKey)
-			.strength(hardness, resistance)
-			.sound(soundGroup)
-			.mapColor(mapColor)
-			.noOcclusion();
-		if (burnable) postSettings = postSettings.ignitedByLava();
-		if (requiresTool) postSettings = postSettings.requiresCorrectToolForDrops();
-
-		PostBlock post = new PostBlock(postSettings, FENCE_POST_INSET);
-		Registry.register(BuiltInRegistries.BLOCK, postBlockKey.identifier(), post);
-
-		ResourceKey<Item> postItemKey = ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(MOD_ID, postName));
-		Registry.register(BuiltInRegistries.ITEM, postItemKey.identifier(),
-			new BlockItem(post, new Item.Properties().setId(postItemKey)));
-		FENCE_POSTS.add(post);
-
-		// Slab
-		ResourceKey<Block> slabBlockKey = ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MOD_ID, slabName));
-		BlockBehaviour.Properties slabSettings = BlockBehaviour.Properties.of()
-			.setId(slabBlockKey)
-			.strength(hardness, resistance)
-			.sound(soundGroup)
-			.mapColor(mapColor)
-			.noOcclusion();
-		if (burnable) slabSettings = slabSettings.ignitedByLava();
-		if (requiresTool) slabSettings = slabSettings.requiresCorrectToolForDrops();
-
-		PostSlabBlock slab = new PostSlabBlock(slabSettings, FENCE_POST_INSET);
-		Registry.register(BuiltInRegistries.BLOCK, slabBlockKey.identifier(), slab);
-
-		ResourceKey<Item> slabItemKey = ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(MOD_ID, slabName));
-		Registry.register(BuiltInRegistries.ITEM, slabItemKey.identifier(),
-			new BlockItem(slab, new Item.Properties().setId(slabItemKey)));
-		FENCE_POST_SLABS.add(slab);
-
-		// Flammability -- wooden posts should spread fire like vanilla fences
-		if (burnable) {
-			FlammableBlockRegistry.getDefaultInstance().add(post, 5, 20);
-			FlammableBlockRegistry.getDefaultInstance().add(slab, 5, 20);
-		}
-
+		PostBlock post = registerPost(baseName + "_fence_post", "minecraft:" + baseName + "_fence", FENCE_POST_INSET, soundGroup, burnable, requiresTool, hardness, resistance, mapColor, FENCE_POSTS);
+		if (post != null) registerFencePostSlab(baseName, soundGroup, burnable, requiresTool, hardness, resistance, mapColor);
 		return post;
 	}
 
@@ -214,54 +166,61 @@ public class Main implements ModInitializer {
 	 * @return The registered PostBlock, or null if already registered
 	 */
 	public static PostBlock registerWallPost(String baseName, SoundType soundGroup, float hardness, float resistance, MapColor mapColor) {
-		String postName = baseName + "_wall_post";
-		String slabName = baseName + "_wall_post_slab";
-		String vanillaBaseId = "minecraft:" + baseName + "_wall";
-
-		if (registeredPosts.contains(postName)) {
-			return null;
-		}
-		registeredPosts.add(postName);
-
-		registerPandoricalContent(postName, vanillaBaseId, false);
-		registerPandoricalContent(slabName, vanillaBaseId, true);
-
-		// Full post
-		ResourceKey<Block> postBlockKey = ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MOD_ID, postName));
-		BlockBehaviour.Properties postSettings = BlockBehaviour.Properties.of()
-			.setId(postBlockKey)
-			.strength(hardness, resistance)
-			.sound(soundGroup)
-			.mapColor(mapColor)
-			.noOcclusion()
-			.requiresCorrectToolForDrops();
-
-		PostBlock post = new PostBlock(postSettings, WALL_POST_INSET);
-		Registry.register(BuiltInRegistries.BLOCK, postBlockKey.identifier(), post);
-
-		ResourceKey<Item> postItemKey = ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(MOD_ID, postName));
-		Registry.register(BuiltInRegistries.ITEM, postItemKey.identifier(),
-			new BlockItem(post, new Item.Properties().setId(postItemKey)));
-		WALL_POSTS.add(post);
-
-		// Slab
-		ResourceKey<Block> slabBlockKey = ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MOD_ID, slabName));
-		BlockBehaviour.Properties slabSettings = BlockBehaviour.Properties.of()
-			.setId(slabBlockKey)
-			.strength(hardness, resistance)
-			.sound(soundGroup)
-			.mapColor(mapColor)
-			.noOcclusion()
-			.requiresCorrectToolForDrops();
-
-		PostSlabBlock slab = new PostSlabBlock(slabSettings, WALL_POST_INSET);
-		Registry.register(BuiltInRegistries.BLOCK, slabBlockKey.identifier(), slab);
-
-		ResourceKey<Item> slabItemKey = ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(MOD_ID, slabName));
-		Registry.register(BuiltInRegistries.ITEM, slabItemKey.identifier(),
-			new BlockItem(slab, new Item.Properties().setId(slabItemKey)));
-		WALL_POST_SLABS.add(slab);
-
+		PostBlock post = registerPost(baseName + "_wall_post", "minecraft:" + baseName + "_wall", WALL_POST_INSET, soundGroup, false, true, hardness, resistance, mapColor, WALL_POSTS);
+		if (post != null) registerWallPostSlab(baseName, soundGroup, hardness, resistance, mapColor);
 		return post;
+	}
+
+	private static PostSlabBlock registerFencePostSlab(String baseName, SoundType soundGroup, boolean burnable, boolean requiresTool, float hardness, float resistance, MapColor mapColor) {
+		return registerSlab(baseName + "_fence_post_slab", "minecraft:" + baseName + "_fence", FENCE_POST_INSET, soundGroup, burnable, requiresTool, hardness, resistance, mapColor, FENCE_POST_SLABS);
+	}
+
+	private static PostSlabBlock registerWallPostSlab(String baseName, SoundType soundGroup, float hardness, float resistance, MapColor mapColor) {
+		return registerSlab(baseName + "_wall_post_slab", "minecraft:" + baseName + "_wall", WALL_POST_INSET, soundGroup, false, true, hardness, resistance, mapColor, WALL_POST_SLABS);
+	}
+
+	private static PostBlock registerPost(String name, String vanillaBaseId, double inset, SoundType soundGroup, boolean burnable, boolean requiresTool, float hardness, float resistance, MapColor mapColor, List<Block> into) {
+		if (!registered.add(name)) return null;
+		registerPandoricalContent(name, vanillaBaseId, false);
+
+		ResourceKey<Block> key = blockKey(name);
+		PostBlock post = new PostBlock(properties(key, soundGroup, burnable, requiresTool, hardness, resistance, mapColor), inset);
+		registerWithItem(key, post, burnable, into);
+		return post;
+	}
+
+	private static PostSlabBlock registerSlab(String name, String vanillaBaseId, double inset, SoundType soundGroup, boolean burnable, boolean requiresTool, float hardness, float resistance, MapColor mapColor, List<Block> into) {
+		if (!registered.add(name)) return null;
+		registerPandoricalContent(name, vanillaBaseId, true);
+
+		ResourceKey<Block> key = blockKey(name);
+		PostSlabBlock slab = new PostSlabBlock(properties(key, soundGroup, burnable, requiresTool, hardness, resistance, mapColor), inset);
+		registerWithItem(key, slab, burnable, into);
+		return slab;
+	}
+
+	private static ResourceKey<Block> blockKey(String name) {
+		return ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MOD_ID, name));
+	}
+
+	private static BlockBehaviour.Properties properties(ResourceKey<Block> key, SoundType soundGroup, boolean burnable, boolean requiresTool, float hardness, float resistance, MapColor mapColor) {
+		BlockBehaviour.Properties settings = BlockBehaviour.Properties.of()
+			.setId(key)
+			.strength(hardness, resistance)
+			.sound(soundGroup)
+			.mapColor(mapColor)
+			.noOcclusion();
+		if (burnable) settings = settings.ignitedByLava();
+		if (requiresTool) settings = settings.requiresCorrectToolForDrops();
+		return settings;
+	}
+
+	private static void registerWithItem(ResourceKey<Block> key, Block block, boolean burnable, List<Block> into) {
+		Registry.register(BuiltInRegistries.BLOCK, key.identifier(), block);
+		ResourceKey<Item> itemKey = ResourceKey.create(Registries.ITEM, key.identifier());
+		Registry.register(BuiltInRegistries.ITEM, itemKey.identifier(), new BlockItem(block, new Item.Properties().setId(itemKey)));
+		into.add(block);
+		// Wooden posts spread fire like vanilla fences
+		if (burnable) FlammableBlockRegistry.getDefaultInstance().add(block, 5, 20);
 	}
 }

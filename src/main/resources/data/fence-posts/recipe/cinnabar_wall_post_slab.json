@@ -1,0 +1,11 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"category": "building",
+	"ingredients": [
+		"minecraft:cinnabar_wall"
+	],
+	"result": {
+		"id": "fence-posts:cinnabar_wall_post_slab",
+		"count": 2
+	}
+}

@@ -1,0 +1,6 @@
+{
+	"parent": "fence-posts:block/parent/fence_post_slab_top",
+	"textures": {
+		"texture": "minecraft:block/poplar_planks"
+	}
+}
