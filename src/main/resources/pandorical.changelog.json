@@ -3,6 +3,9 @@
 		"Any fence or wall can stand alone as a post, with half-height post slabs to go under them."
 	],
 	"versions": {
+		"3.1.2": [
+			"A demo to play in PvP Dimensions' onboarding."
+		],
 		"3.1.1": [
 			"Drop changelog notes for changes nothing in the game shows."
 		],
